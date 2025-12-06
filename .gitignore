@@ -1,3 +1,7 @@
+# Folders
 source_data
 h5ad
+
+# Files
 qc*
+*.out
