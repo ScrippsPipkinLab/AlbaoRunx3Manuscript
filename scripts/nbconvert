@@ -4,6 +4,9 @@
 #SBATCH --time=2-00:00:00
 #SBATCH --job-name nbconvert
 
+# Disable oneDNN optimizations
+export TF_ENABLE_ONEDNN_OPTS=0
+
 # Use node-local scratch if available, otherwise /tmp
 export NUMBA_CACHE_DIR="${SLURM_TMPDIR:-${TMPDIR:-/tmp}}/numba_cache"
 mkdir -p "$NUMBA_CACHE_DIR"
