@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+#SBATCH --account=scripps-dept
+#SBATCH --qos=scripps-dept-b
+#SBATCH --time=2-00:00:00
+#SBATCH --job-name nbconvert
+
+# Use node-local scratch if available, otherwise /tmp
+export NUMBA_CACHE_DIR="${SLURM_TMPDIR:-${TMPDIR:-/tmp}}/numba_cache"
+mkdir -p "$NUMBA_CACHE_DIR"
+
+# Optional: make sure matplotlib etc. also have writable cache dirs
+export MPLCONFIGDIR="${SLURM_TMPDIR:-${TMPDIR:-/tmp}}/mpl"
+mkdir -p "$MPLCONFIGDIR"
+
+# First argument is the image suffix
+IMAGE="$1"
+shift   # Remove $1 so the rest are nbconvert args
+
+# Now pass the remaining args to jupyter nbconvert
+run "dsalbao/${IMAGE}" jupyter nbconvert "$@"
