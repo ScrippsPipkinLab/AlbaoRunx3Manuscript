@@ -1,7 +1,13 @@
 # Folders
 source_data
 h5ad
+signatures
+2*
+cache
+rds
 
 # Files
 qc*
 *.out
+queue*
+*.rds

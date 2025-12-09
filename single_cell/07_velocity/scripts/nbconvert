@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+# First argument is the image suffix
+IMAGE="$1"
+shift   # Remove $1 so the rest are nbconvert args
+
+# Now pass the remaining args to jupyter nbconvert
+docker exec -it -w $(pwd) ${IMAGE} jupyter nbconvert "$@"
