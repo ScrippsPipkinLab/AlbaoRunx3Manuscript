@@ -11,3 +11,4 @@ qc*
 *.out
 queue*
 *.rds
+*.csv
