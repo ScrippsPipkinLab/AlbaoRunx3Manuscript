@@ -1,6 +1,6 @@
-# AlbaoRunx3Manuscript
+# AlbaoRunx3Manuscript (In Revision)
 
-Code and analysis assets for the manuscript investigating RUNX3-dependent regulation in CD8 T cells. The repository collects single-cell RNA-seq processing notebooks, ATAC-seq differential accessibility workflows, figure exports, and helper scripts used throughout the study.
+(Manuscript in Revision!) Code and analysis assets for the manuscript investigating RUNX3-dependent regulation in CD8 T cells. The repository collects single-cell RNA-seq processing notebooks, ATAC-seq differential accessibility workflows, figure exports, and helper scripts used throughout the study.
 
 ## Repository layout
 
