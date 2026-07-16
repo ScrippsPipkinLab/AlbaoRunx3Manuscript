@@ -5,6 +5,7 @@ signatures
 2*
 cache
 rds
+*.bigWig
 
 # Files
 qc*
