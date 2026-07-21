@@ -6,6 +6,7 @@ signatures
 cache
 rds
 *.bigWig
+.ipynb_checkpoints
 
 # Files
 qc*
