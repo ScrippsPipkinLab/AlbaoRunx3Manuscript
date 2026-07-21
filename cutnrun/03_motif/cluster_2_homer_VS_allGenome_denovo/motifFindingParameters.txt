@@ -1,0 +1,1 @@
+cmd = 01_peakEDA/splitTruePeaks.good/cluster_2.bed source_data/260713_reBAM2_DeDup_CPM/04_reporting/igv/genome.fa 03_motif/cluster_2_homer_VS_allGenome_denovo -size given -p 36
