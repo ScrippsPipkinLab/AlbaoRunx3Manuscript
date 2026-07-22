@@ -1,0 +1,1 @@
+cmd = 01_peakEDA/cluster2.fullpeak.clean.bed source_data/260713_reBAM2_DeDup_CPM/04_reporting/igv/genome.fa 03_motif/cluster2 -size given -p 24

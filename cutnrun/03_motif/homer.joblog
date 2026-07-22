@@ -1,0 +1,3 @@
+Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+2	:	1784693956.848	  3487.638	0	0	0	0	homer findMotifsGenome.pl 01_peakEDA/cluster2.fullpeak.clean.bed source_data/260713_reBAM2_DeDup_CPM/04_reporting/igv/genome.fa 03_motif/cluster2 -size given -p 24
+1	:	1784693956.845	  3499.756	0	0	0	0	homer findMotifsGenome.pl 01_peakEDA/cluster1.fullpeak.clean.bed source_data/260713_reBAM2_DeDup_CPM/04_reporting/igv/genome.fa 03_motif/cluster1 -size given -p 24
