@@ -1,0 +1,15 @@
+Status	source_data/bowtie2/target/markdup/shCd19_Runx3_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shCd19_Runx1_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shRunx3_Runx3_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shRunx3_Runx1_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/memory_Runx3_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/memory_Runx1_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/early_Runx3_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/early_Runx1_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/late_Runx3_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/late_Runx1_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/terminal_Runx3_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/terminal_Runx1_R1.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shCd19_Runx3_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shCd19_Runx1_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shRunx3_Runx3_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/shRunx3_Runx1_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/memory_Runx3_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/memory_Runx1_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/early_Runx3_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/early_Runx1_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/late_Runx3_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/late_Runx1_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/terminal_Runx3_R2.target.markdup.sorted.bam	source_data/bowtie2/target/markdup/terminal_Runx1_R2.target.markdup.sorted.bam
+Assigned	174671	57389	76809	54961	24176	18927	27994	16045	30450	20962	26502	14601	25782	13609	22375	23096	23007	24352	22801	18371	38034	40385	15826	12988
+Unassigned_Unmapped	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	5691405	5349306	6045431	5036498	5674902	5561148	7537227	5435484	5266989	4291304	3250745	2612509	7199820	3653686	5024913	7650655	6053992	6560722	9605391	7150867	10927530	11129166	4887635	4343694
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
