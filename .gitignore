@@ -16,3 +16,4 @@ queue*
 *.csv
 *BAK*
 *.bdg
+~$*
