@@ -2,11 +2,11 @@
 source_data
 h5ad
 signatures
-2*
 cache
 rds
 *.bigWig
 .ipynb_checkpoints
+*.wsp
 
 # Files
 qc*
