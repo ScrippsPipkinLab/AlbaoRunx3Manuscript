@@ -11,13 +11,35 @@
 # the interpolation between the two zero edges trivially flat, since Gviz would
 # otherwise treat one wide interval as a single point and draw a smooth V/triangle
 # dipping down to it and back up, instead of a flat baseline with sharp edges.
+#
+# The same collapse happens for wide intervals that are already IN the data
+# (not gaps at all): Gviz's position() for a DataTrack is rowMeans(start, end)
+# per range -- one x per range, regardless of width -- so any run the bigWig
+# encodes as a single wide interval (its native RLE compression does this for
+# every flat run, zero or not) also collapses to one midpoint and produces the
+# same V/triangle when interpolated against neighboring points. Anchoring both
+# edges of every wide interval at 1bp (below), not just synthetic gap edges,
+# keeps those plateaus flat too.
 densifyZeros <- function(subset_data, region) {
+    mcols(subset_data)$score[mcols(subset_data)$score < 0] <- 0
+
     holes <- GenomicRanges::setdiff(region, subset_data)
-    if (length(holes) == 0) return(subset_data)
-    edges <- c(resize(holes, width = 1, fix = "start"),
-               resize(holes, width = 1, fix = "end"))
-    mcols(edges)$score <- 0
-    sort(c(subset_data, edges))
+    if (length(holes) > 0) {
+        edges <- c(resize(holes, width = 1, fix = "start"),
+                   resize(holes, width = 1, fix = "end"))
+        mcols(edges)$score <- 0
+        subset_data <- c(subset_data, edges)
+    }
+
+    wide <- width(subset_data) > 1
+    if (any(wide)) {
+        flat <- subset_data[wide]
+        subset_data <- c(subset_data[!wide],
+                          resize(flat, width = 1, fix = "start"),
+                          resize(flat, width = 1, fix = "end"))
+    }
+
+    sort(subset_data)
 }
 
 subsetNormalizeBigwig <- function(  bigwig_data,
@@ -61,6 +83,11 @@ subsetNormalizeBigwig <- function(  bigwig_data,
         # Set maximum Y value
         if(range_values[2] < range_values_sample[2]){
             range_values[2] <- range_values_sample[2]
+        }
+
+        # Set Y floor to 0 if the minimum Y value is less than 0
+        if(range_values[1] < 0){
+            range_values[1] <- 0
         }
 
     }
@@ -135,7 +162,7 @@ peakHighlighter <- function(    data_tracks,
 
     mcols(peakers) <- mcols(peakers) %>% 
         as.data.frame() %>% 
-        select(name, color)
+        dplyr::select(name, color)
 
     # Make Granges object of gene
     chromosome <- as.character(seqnames(gene_data[mcols(gene_data)$gene_id == gene]))
@@ -144,7 +171,7 @@ peakHighlighter <- function(    data_tracks,
     mcols(genes_gr)$color <- "#f5f5f5"
     mcols(genes_gr) <- mcols(genes_gr) %>% 
         as.data.frame() %>% 
-        select(name, color)
+        dplyr::select(name, color)
 
     # Combine gene and peaks
     combined_gr <- c(genes_gr, peakers)
@@ -209,7 +236,7 @@ modelHighlighter <- function(   model_tracks,
     mcols(genes_gr)$color <- "#f5f5f5"
     mcols(genes_gr) <- mcols(genes_gr) %>% 
         as.data.frame() %>% 
-        select(name, color)
+        dplyr::select(name, color)
 
     combined_gr <- subsetByOverlaps(genes_gr, region)
 
@@ -352,14 +379,14 @@ identifyDaps <- function(   daps,
         # Convert to vector of names
         open_vs_naive <- control_comparisons %>%
             filter(log2FC > 0) %>%
-            select(name) %>% unique()
+            dplyr::select(name) %>% unique()
         open_vs_naive <- open_vs_naive$name
 
         # Then isolate regions that open relative to naive (union of all)
         # Convert to vector of names
         close_vs_naive <- control_comparisons %>%
             filter(log2FC < 0) %>%
-            select(name) %>% unique()
+            dplyr::select(name) %>% unique()
         close_vs_naive <- close_vs_naive$name
     } else {
         open_vs_naive <- close_vs_naive <- unique(daps$name)  # If not naive relative, just use all names
@@ -371,7 +398,7 @@ identifyDaps <- function(   daps,
     select <- daps %>%
         filter( grepl(filter, flank_geneSymbols),                               # filter for gene
                 grepl("shRunx3_vs_shCD19", comparison)) %>%                     # filter for comparisons
-        select(comparison, name, log2FC, location) %>%                          # location is of the form chr:start-end, split into three columns
+        dplyr::select(comparison, name, log2FC, location) %>%                          # location is of the form chr:start-end, split into three columns
         separate(location, into = c("chr", "start", "end"), sep = "[:-]") %>%   # append "chr" to prefix of chr
         mutate(chr = paste0("chr", chr)) %>%                                    # convert start and end to numeric
         mutate(start = as.numeric(start), end = as.numeric(end)) %>%            # remove comparison with CX3CR1pos or GFPneg
@@ -398,7 +425,7 @@ identifyDaps <- function(   daps,
         arrange(type, chr, start) %>%  # Make a column to see if name is duplicated
         mutate(duplicated_name = duplicated(name)) %>% # Select not duplicated names
         filter(!duplicated_name) %>%  # Remove duplicated names
-        select(-duplicated_name)  # Remove the duplicated_name column
+        dplyr::select(-duplicated_name)  # Remove the duplicated_name column
 
     # Make a new column called highlight, this is dependent on the type and named vector highlight_colors
     select <- select %>%
@@ -436,7 +463,7 @@ determinePlotBoundsAuto <- function(    gene,
     if (!is.null(identifiedDaps) && nrow(identifiedDaps) > 0) {
         # Select only name, chr, start, and end columns of identifiedDaps
         identifiedDaps <- identifiedDaps %>%
-            select(name, chr, start, end)
+            dplyr::select(name, chr, start, end)
 
         # Row bind the two data frames
         genes_df <- rbind(genes_df, identifiedDaps)
@@ -511,6 +538,18 @@ plot_gene_auto <- function( gene,
         densify = densify                                # Whether to fill zero-coverage gaps, per normalization group
     )
 
+    # Un-bold gene labels in the model tracks (Gviz's GeneRegionTrack defaults
+    # fontface.group to 2/bold, and preprocessTracks.R/plotTracks.R may set it
+    # even bolder) -- override here so no track text renders bold. Must run
+    # before modelHighlighter() below, since that call can replace model_tracks
+    # with a single HighlightTrack (not a subsettable list) when DAPs overlap
+    # the plotted region.
+    for (i in seq_along(model_tracks)) {
+        if (is(model_tracks[[i]], "GeneRegionTrack")) {
+            displayPars(model_tracks[[i]])$fontface.group <- 3  # italic, not bold
+        }
+    }
+
     # Only highlight if DAPs were actually identified
     if (!is.null(identifiedDaps)) {
 
@@ -550,15 +589,6 @@ plot_gene_auto <- function( gene,
         )
     } else {
         ideo_track <- NULL
-    }
-
-    # Un-bold gene labels in the model tracks (Gviz's GeneRegionTrack defaults
-    # fontface.group to 2/bold, and preprocessTracks.R/plotTracks.R may set it
-    # even bolder) -- override here so no track text renders bold.
-    for (i in seq_along(model_tracks)) {
-        if (is(model_tracks[[i]], "GeneRegionTrack")) {
-            displayPars(model_tracks[[i]])$fontface.group <- 3  # italic, not bold
-        }
     }
 
     # Combine lists of tracks
@@ -612,6 +642,18 @@ plot_gene_manual <- function(   gene,
         densify = densify                                # Whether to fill zero-coverage gaps, per normalization group
     )
 
+    # Un-bold gene labels in the model tracks (Gviz's GeneRegionTrack defaults
+    # fontface.group to 2/bold, and preprocessTracks.R/plotTracks.R may set it
+    # even bolder) -- override here so no track text renders bold. Must run
+    # before modelHighlighter() below, since that call can replace model_tracks
+    # with a single HighlightTrack (not a subsettable list) when DAPs overlap
+    # the plotted region.
+    for (i in seq_along(model_tracks)) {
+        if (is(model_tracks[[i]], "GeneRegionTrack")) {
+            displayPars(model_tracks[[i]])$fontface.group <- 3  # italic, not bold
+        }
+    }
+
     # Only highlight if DAP/peak information was actually supplied
     if (!is.null(daps) && !is.null(peak_data)) {
 
@@ -658,15 +700,6 @@ plot_gene_manual <- function(   gene,
         )
     } else {
         ideo_track <- NULL
-    }
-
-    # Un-bold gene labels in the model tracks (Gviz's GeneRegionTrack defaults
-    # fontface.group to 2/bold, and preprocessTracks.R/plotTracks.R may set it
-    # even bolder) -- override here so no track text renders bold.
-    for (i in seq_along(model_tracks)) {
-        if (is(model_tracks[[i]], "GeneRegionTrack")) {
-            displayPars(model_tracks[[i]])$fontface.group <- 3  # italic, not bold
-        }
     }
 
     # Combine lists of tracks
