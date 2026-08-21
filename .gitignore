@@ -18,3 +18,4 @@ queue*
 *.bdg
 ~$*
 __*
+*.RData
