@@ -208,14 +208,17 @@ add_population_derivatives <- function( df,
 #' @param percent_cols character vector of percent columns to place last
 #' @param drop_cols helper columns to remove if present
 #' @param round_digits integer digits to round Percent columns (set NULL to skip rounding)
+#' @param keep_path if TRUE, retains PopulationFullPath even if listed in drop_cols
 #' @return tibble
 finalize_flow_table <- function(df,
                                 id_cols      = c("ID", "Group", "Replicate"),
                                 percent_cols = c("Percent", "PercentOfTotal"),
                                 drop_cols    = c("Depth", "ParentPath", "PopulationFullPath"),
-                                round_digits = 6) {
+                                round_digits = 6,
+                                keep_path    = FALSE) {
 
     # ---- 1) Drop helper columns if they exist ----------------------------------------------
+    if (keep_path) drop_cols <- setdiff(drop_cols, "PopulationFullPath")
     out <- df %>% select(-any_of(drop_cols))
 
     # ---- 2) Identify "Population" + all "Population{n}Deriv" columns dynamically -----------
