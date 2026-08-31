@@ -1,0 +1,4 @@
+{
+  "Stim": ["IFNg", "DP", "DN", "TNFa"],
+  "Pipkin": ["Early", "Late", "Term", "Undef"]
+}
