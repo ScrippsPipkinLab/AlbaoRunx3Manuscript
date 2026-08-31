@@ -1,0 +1,6 @@
+{
+  "Pipkin": ["TcmE", "TcmL", "TE", "Exh"],
+  "Gerlach": ["Tcm", "Tpm", "Tem"],
+  "Kaech": ["TE", "DP", "MP", "EE"],
+  "Marker": ["Tcf1Pos", "TOXPos", "KLRG1pos", "CD127pos"]
+}
