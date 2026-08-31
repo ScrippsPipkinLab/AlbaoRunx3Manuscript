@@ -1,0 +1,7 @@
+{
+  "Pipkin": ["TcmE", "TcmL", "TE", "Exh"],
+  "Gerlach": ["Tcm", "Tpm", "Tem"],
+  "Kaech": ["TE", "DP", "MP", "EE"],
+  "Fate": ["TcmE", "TcmL", "DP", "TE"],
+  "Marker": ["CXCR6Pos", "ToxPos", "KLRG1pos", "CD127pos"]
+}
