@@ -309,5 +309,11 @@ plot_genes <- function(
 
 # plot_genes(gene = "Cxcr6", chromosome = "chr9", start_pos = 123790000, end_pos = 123854000)
 
-plot_genes(gene = "Tcf7", chromosome = "chr11", start_pos = 52210000, end_pos = 52340000)
-plot_genes(gene = "Rora", chromosome = "chr9", start_pos = 68550000, end_pos = 69410000)
+plot_genes(gene = "Tox", chromosome = "chr4", start_pos = 6650000 - 20000, end_pos = 7010000 + 20000,
+    custom_norm_factor = c(     cnr_d5_runx3  = 2,
+                                cnr_d5_runx1  = 2,
+                                cnr_d8_runx3  = 2,
+                                cnr_d8_runx1  = 2,
+                                atc_d8        = 1
+                            )
+)
